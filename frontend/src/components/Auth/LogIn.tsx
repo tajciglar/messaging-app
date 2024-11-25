@@ -6,6 +6,8 @@ const LogIn: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    
     console.log("Email:", email);
     console.log("Password:", password);
   };
