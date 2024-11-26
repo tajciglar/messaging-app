@@ -4,13 +4,30 @@ const LogIn: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    
-    console.log("Email:", email);
-    console.log("Password:", password);
-  };
+    try {
+      const response = await fetch("http://localhost:3000/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }), 
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Login successful:", data);
+
+      // Handle login success (e.g., navigate, store token, etc.)
+    } catch (err) {
+      console.error("Login failed:", err);
+    }
+  }
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -18,7 +35,10 @@ const LogIn: React.FC = () => {
         <h1 className="text-2xl font-bold mb-4 text-center">Log In</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email Address
             </label>
             <input
@@ -32,7 +52,10 @@ const LogIn: React.FC = () => {
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <input

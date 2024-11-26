@@ -1,16 +1,16 @@
 import { useState } from "react";
 
 interface ActiveChatProps {
-  activeChat: string | null; // Active chat prop
+  activeChat: string | null; 
+  messages: string[];
 }
 
-const ActiveChat: React.FC<ActiveChatProps> = ({ activeChat }) => {
-  const [messages, setMessages] = useState<string[]>([]); 
+const ActiveChat: React.FC<ActiveChatProps> = ({ activeChat, messages }) => {
   const [currentMessage, setCurrentMessage] = useState<string>(""); 
 
   const handleSend = () => {
     if (currentMessage.trim()) {
-      setMessages((prevMessages) => [...prevMessages, currentMessage]);
+      messages.push(currentMessage);
       setCurrentMessage(""); 
     }
   };
@@ -43,6 +43,7 @@ const ActiveChat: React.FC<ActiveChatProps> = ({ activeChat }) => {
           </p>
         )}
       </div>
+      
       <div className="p-4 border-t bg-gray-100">
         <form
           className="flex items-center space-x-2"
