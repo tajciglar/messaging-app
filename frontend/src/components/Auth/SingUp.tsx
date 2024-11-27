@@ -6,16 +6,27 @@ const SignUp: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  async function handleSubmit (e: React.FormEvent) {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
-    // Add logic to handle form submission, such as API call
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Password:", password);
+    
+    try {
+      const response = await fetch('http://localhost:3000/auth/signup', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({name, email, password}),
+      });
+
+      const data = await response.json();
+      console.log(data.message);
+   } catch (err) {
+    console.error(err)
+   }
   };
 
   return (

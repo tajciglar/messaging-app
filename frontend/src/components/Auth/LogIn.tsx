@@ -1,31 +1,53 @@
 import React, { useState } from "react";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const LogIn: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
+    if (!email || !password) {
+      setError("Email and password are required.");
+      return;
+    }
+
     try {
+    
       const response = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }), 
+        body: JSON.stringify({ email, password }),
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
       const data = await response.json();
-      console.log("Login successful:", data);
+    
+      if (response.ok) {
+        const { token } = data;
 
-      // Handle login success (e.g., navigate, store token, etc.)
+        localStorage.setItem("token", token);
+        const decodedToken: { exp: number; id: string } = jwtDecode(token);
+
+        const currentTime = Math.floor(Date.now() / 1000);
+        if (decodedToken.exp < currentTime) {
+          setError("Your session has expired. Please log in again.");
+          return;
+        }
+
+        localStorage.setItem("userId", decodedToken.id);
+        navigate("/home"); // Redirect to a protected route after successful login
+      } else {
+        setError(data.message || "Login failed. Please try again.");
+      }
     } catch (err) {
       console.error("Login failed:", err);
+      setError("An error occurred. Please try again later.");
     }
   }
 
@@ -68,6 +90,7 @@ const LogIn: React.FC = () => {
               placeholder="Enter your password"
             />
           </div>
+          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
