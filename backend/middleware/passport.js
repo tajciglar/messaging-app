@@ -4,22 +4,6 @@ const prisma = new PrismaClient()
 const { ExtractJwt, Strategy: JwtStrategy } = require('passport-jwt');
 const jwtSecret = process.env.JWT_SECRET
 
-passport.serializeUser((user, done) => {
-    done(null, user.id);
- });
-
-
-passport.deserializeUser((id, done) => {
-    prisma.user.findUnique({
-      where: {
-        id: id
-      }  
-    })
-    .then(user => {
-            done(null, user);
-    })
-    .catch(err => done(err));   
-});
 
 passport.use(
     new JwtStrategy(

@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const authRoutes = require('./routes/authRoutes');
-const indexRoutes = require('./routes/indexRoutes')
+const indexRoutes = require('./routes/userRoutes')
 
 
 app.use(express.urlencoded({ extended: false }));
@@ -16,7 +16,7 @@ app.use(cors({
   credentials: true,
 }));
 
-app.use('/', indexRoutes);
+app.use('/users', indexRoutes);
 app.use('/auth', authRoutes)
 
 const PORT = process.env.PORT || 3000;

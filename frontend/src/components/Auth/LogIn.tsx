@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { jwtDecode } from "jwt-decode";
+import { useAuth } from "../context/AuthContext"; // Import the custom hook
 import { useNavigate } from "react-router-dom";
 
 const LogIn: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const { logIn } = useAuth(); // Get logIn function from context
   const navigate = useNavigate();
 
   async function handleSubmit(e: React.FormEvent) {
@@ -17,7 +18,6 @@ const LogIn: React.FC = () => {
     }
 
     try {
-    
       const response = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
         headers: {
@@ -27,21 +27,11 @@ const LogIn: React.FC = () => {
       });
 
       const data = await response.json();
-    
+
       if (response.ok) {
         const { token } = data;
-
-        localStorage.setItem("token", token);
-        const decodedToken: { exp: number; id: string } = jwtDecode(token);
-
-        const currentTime = Math.floor(Date.now() / 1000);
-        if (decodedToken.exp < currentTime) {
-          setError("Your session has expired. Please log in again.");
-          return;
-        }
-
-        localStorage.setItem("userId", decodedToken.id);
-        navigate("/home"); // Redirect to a protected route after successful login
+        logIn(token); // Set the token in context
+        navigate("/"); // Redirect to the homepage
       } else {
         setError(data.message || "Login failed. Please try again.");
       }
@@ -57,10 +47,7 @@ const LogIn: React.FC = () => {
         <h1 className="text-2xl font-bold mb-4 text-center">Log In</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Email Address
             </label>
             <input
@@ -74,10 +61,7 @@ const LogIn: React.FC = () => {
             />
           </div>
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               Password
             </label>
             <input

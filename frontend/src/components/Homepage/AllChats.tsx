@@ -1,5 +1,6 @@
 interface AllChatsProps {
   setActiveChat: (name: string) => void; 
+  chats: string[],
 }
 
 const AllChats: React.FC<AllChatsProps> = ({ setActiveChat }) => {
