@@ -41,7 +41,7 @@ async function signUp (req, res) {
                 password: hashedPassword,
             },
         });
-        console.log(newUser)
+        
         res.status(201).json({ message: "User created successfully" });
   } catch (err) {
     console.error(err);

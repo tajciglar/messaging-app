@@ -4,8 +4,7 @@ import ActiveChat from "./ActiveChat";
 
 const Homepage: React.FC = () => {
   const [activeChat, setActiveChat] = useState<string | null>(null);
-  const [chats, setChats] = useState<string[]>([]); // To store the chats list
-
+  const [chats, setChats] = useState<{ id: number; name: string; messages: { content: string }[] }[]>([]);
 
   const handleSetActiveChat = (name: string) => {
     setActiveChat(name);
@@ -18,7 +17,7 @@ const Homepage: React.FC = () => {
       console.log("No token found");
       return;
     }
-// TODO: Get chats + messages
+
     try {
       const response = await fetch('http://localhost:3000/users/chats', {
         method: "GET",
@@ -29,13 +28,25 @@ const Homepage: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setChats(data); 
+        console.log(data);
+        setChats(data);
       } else {
         console.log("Failed to fetch chats", response.statusText);
       }
     } catch (error) {
       console.log("Error fetching chats", error);
     }
+  };
+
+  // Add message to the correct chat
+  const addMessage = (chatName: string, message: string) => {
+    setChats((prevChats) =>
+      prevChats.map((chat) =>
+        chat.name === chatName
+          ? { ...chat, messages: [...chat.messages, { content: message }] }
+          : chat
+      )
+    );
   };
 
   useEffect(() => {
@@ -51,7 +62,7 @@ const Homepage: React.FC = () => {
 
       {/* Right Panel: Active Chat */}
       <div className="w-3/4">
-        <ActiveChat activeChat={activeChat} messages={messages} />
+        <ActiveChat activeChat={activeChat} chats={chats} addMessage={addMessage} />
       </div>
     </div>
   );

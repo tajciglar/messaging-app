@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController')
-const verifyToken = require('../middleware/verifyToken')
+const { verifyToken } = require('../middleware/verifyToken');
 
 router.get('/', (req, res) => {
   res.send('API is running');
 });
 
-router.get('/chats', verifyToken, userController);
+router.get('/chats', verifyToken, userController.getChats);
 
 module.exports = router;
