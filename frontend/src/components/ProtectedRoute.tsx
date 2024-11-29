@@ -7,7 +7,8 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, redirectTo }) => {
-   
+    const token = localStorage.getItem("token");
+    console.log(token);
     const { isLoggedIn } = useAuth(); // Check if the user is logged in from context
     console.log(isLoggedIn)
     if (!isLoggedIn) {

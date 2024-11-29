@@ -16,7 +16,7 @@ const ActiveChat: React.FC<ActiveChatProps> = ({ activeChat, chats, addMessage }
     }
   };
 
-  // Get the active chat object
+
   const activeChatData = chats.find((chat) => chat.name === activeChat);
 
   return (

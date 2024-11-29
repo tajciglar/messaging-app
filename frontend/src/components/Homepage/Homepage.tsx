@@ -28,8 +28,7 @@ const Homepage: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
-        setChats(data);
+        setChats(data[0].messages);
       } else {
         console.log("Failed to fetch chats", response.statusText);
       }
