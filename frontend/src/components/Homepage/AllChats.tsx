@@ -4,6 +4,8 @@ interface AllChatsProps {
 }
 
 const AllChats: React.FC<AllChatsProps> = ({ setActiveChat, chats }) => {
+
+ 
   return (
     <div className="w-full h-full">
       <h2 className="p-4 text-lg font-bold">Chats</h2>

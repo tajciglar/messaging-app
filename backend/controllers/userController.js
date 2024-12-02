@@ -3,11 +3,8 @@ const prisma = new PrismaClient();
 
 async function getChats (req, res) {
     const userId = req.userId;
-    console.log("in")
+
     const chats = await prisma.user.findMany({
-        where: {
-            id: userId,
-        },
         select: {
             id: true,
             name: true,

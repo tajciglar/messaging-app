@@ -3,8 +3,6 @@ const router = express.Router();
 const userController = require('../controllers/authController')
 
 
-
-
 //sign up
 router.post('/signup', userController.signUp)
 

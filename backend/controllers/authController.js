@@ -31,7 +31,7 @@ async function signUp (req, res) {
     }
 
     try {
-    
+        
         const hashedPassword = await bcrypt.hash(password, 10);
         
         const newUser = await prisma.user.create({
@@ -41,13 +41,14 @@ async function signUp (req, res) {
                 password: hashedPassword,
             },
         });
-        
+        console.log(newUser)
         res.status(201).json({ message: "User created successfully" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 }
+
 
 
 // Login controller
@@ -59,6 +60,7 @@ async function logIn (req, res) {
             email: email,
         },
     });
+    console.log(user)
   
     const match = await bcrypt.compare(password, user.password);
     if (!match) {

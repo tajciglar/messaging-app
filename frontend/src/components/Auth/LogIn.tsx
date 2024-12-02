@@ -6,7 +6,7 @@ const LogIn: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const { logIn } = useAuth(); // Get logIn function from context
+  const { logIn } = useAuth(); 
   const navigate = useNavigate();
 
   async function handleSubmit(e: React.FormEvent) {
@@ -27,11 +27,10 @@ const LogIn: React.FC = () => {
       });
 
       const data = await response.json();
-
       if (response.ok) {
         const { token } = data;
-        logIn(token); // Set the token in context
-        navigate("/"); // Redirect to the homepage
+        logIn(token); 
+        navigate("/"); 
       } else {
         setError(data.message || "Login failed. Please try again.");
       }

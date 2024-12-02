@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import AllChats from "./AllChats";
 import ActiveChat from "./ActiveChat";
+import { useAuth } from "../context/AuthContext";
 
 const Homepage: React.FC = () => {
   const [activeChat, setActiveChat] = useState<string | null>(null);
-  const [chats, setChats] = useState<{ id: number; name: string; messages: { content: string }[] }[]>([]);
+  const [chats, setChats] = useState<{ id: number; name: string; messages: { content: string; senderId: number }[] }[]>([]);
+  const {user} = useAuth()
+  
+  const currentUserId = user?.id ?? 0;
 
   const handleSetActiveChat = (name: string) => {
     setActiveChat(name);
@@ -19,16 +23,16 @@ const Homepage: React.FC = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/users/chats', {
+      const response = await fetch("http://localhost:3000/users/chats", {
         method: "GET",
         headers: {
-          "Authorization": `Bearer ${token}`,
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (response.ok) {
         const data = await response.json();
-        setChats(data[0].messages);
+        setChats(data);
       } else {
         console.log("Failed to fetch chats", response.statusText);
       }
@@ -37,12 +41,11 @@ const Homepage: React.FC = () => {
     }
   };
 
-  // Add message to the correct chat
-  const addMessage = (chatName: string, message: string) => {
+  const addMessage = (chatName: string, message: { content: string; senderId: number }) => {
     setChats((prevChats) =>
       prevChats.map((chat) =>
         chat.name === chatName
-          ? { ...chat, messages: [...chat.messages, { content: message }] }
+          ? { ...chat, messages: [...chat.messages, message] }
           : chat
       )
     );
@@ -54,17 +57,16 @@ const Homepage: React.FC = () => {
 
   return (
     <div className="flex w-3/4 bg-white rounded-lg border-2">
-      {/* Left Panel: List of Chats */}
       <div className="border-r-2 w-1/4">
         <AllChats setActiveChat={handleSetActiveChat} chats={chats} />
       </div>
-
-      {/* Right Panel: Active Chat */}
       <div className="w-3/4">
-        <ActiveChat activeChat={activeChat} chats={chats} addMessage={addMessage} />
+        <ActiveChat activeChat={activeChat} chats={chats} addMessage={addMessage} currentUserId={currentUserId} />
       </div>
     </div>
   );
 };
 
 export default Homepage;
+
+

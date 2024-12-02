@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 const SignUp: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const navigate = useNavigate();
   async function handleSubmit (e: React.FormEvent) {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -23,7 +26,11 @@ const SignUp: React.FC = () => {
       });
 
       const data = await response.json();
-      console.log(data.message);
+      console.log("data" ,data)
+      if (response.ok){
+        navigate("/login");
+
+      }
    } catch (err) {
     console.error(err)
    }
