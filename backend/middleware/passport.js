@@ -12,7 +12,7 @@ passport.use(
             secretOrKey: jwtSecret
         },
         async (payload, done) => {
-            console.log('JWT Payload:', payload); // Log the JWT payload
+            console.log('JWT Payload:', payload); 
 
             try {
                 const user = await prisma.user.findUnique({
@@ -26,7 +26,7 @@ passport.use(
                     return done(null, false, { message: "User not found" });
                 }
 
-                return done(null, user); // If the user is found, pass it to the next middleware
+                return done(null, user); 
             } catch (err) {
                 console.error('Error in JWT strategy:', err);
                 return done(err);

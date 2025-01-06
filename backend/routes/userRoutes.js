@@ -9,4 +9,6 @@ router.get('/', (req, res) => {
 
 router.get('/chats', verifyToken, userController.getChats);
 
+router.post('/messages', verifyToken, userController.setMessage);
+
 module.exports = router;

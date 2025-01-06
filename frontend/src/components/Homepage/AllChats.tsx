@@ -1,11 +1,9 @@
 interface AllChatsProps {
-  setActiveChat: (name: string) => void;
-  chats: { id: number; name: string; messages: { content: string }[] }[]; 
+  setActiveChat: (id: number) => void;
+  chats: { id: number; name: string; messages: { content: string }[] }[];
 }
 
 const AllChats: React.FC<AllChatsProps> = ({ setActiveChat, chats }) => {
-
- 
   return (
     <div className="w-full h-full">
       <h2 className="p-4 text-lg font-bold">Chats</h2>
@@ -16,7 +14,7 @@ const AllChats: React.FC<AllChatsProps> = ({ setActiveChat, chats }) => {
           {chats.map((chat) => (
             <li
               key={chat.id}
-              onClick={() => setActiveChat(chat.name)}
+              onClick={() => setActiveChat(chat.id)}  
               className="p-4 hover:bg-gray-100 cursor-pointer"
             >
               {chat.name}

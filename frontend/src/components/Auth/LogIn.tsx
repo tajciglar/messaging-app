@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAuth } from "../context/AuthContext"; // Import the custom hook
+import { useAuth } from "../context/AuthContext"; 
 import { useNavigate } from "react-router-dom";
 
 const LogIn: React.FC = () => {
