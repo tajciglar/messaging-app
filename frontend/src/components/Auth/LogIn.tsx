@@ -8,6 +8,7 @@ const LogIn: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const { logIn } = useAuth(); 
   const navigate = useNavigate();
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -18,7 +19,7 @@ const LogIn: React.FC = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/auth/login", {
+      const response = await fetch(`${BACKEND_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -7,8 +7,11 @@ const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   const navigate = useNavigate();
+
+
   async function handleSubmit (e: React.FormEvent) {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -17,7 +20,7 @@ const SignUp: React.FC = () => {
     }
     
     try {
-      const response = await fetch('http://localhost:3000/auth/signup', {
+      const response = await fetch(`${BACKEND_URL}/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

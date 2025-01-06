@@ -9,6 +9,7 @@ const Homepage: React.FC = () => {
   const { user } = useAuth();
 
   const currentUserId = user?.id ?? 0;
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   const handleSetActiveChat = (chatId: number, receiverId: number ) => {
     setActiveChat({chatId, receiverId}); 
@@ -24,7 +25,7 @@ const Homepage: React.FC = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/users/chats", {
+      const response = await fetch(`${BACKEND_URL}/users/chats`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -60,7 +61,7 @@ const Homepage: React.FC = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/users/messages", {
+      const response = await fetch(`${BACKEND_URL}/users/messages`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
