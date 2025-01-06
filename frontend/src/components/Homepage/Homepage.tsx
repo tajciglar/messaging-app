@@ -4,14 +4,14 @@ import ActiveChat from "./ActiveChat";
 import { useAuth } from "../context/AuthContext";
 
 const Homepage: React.FC = () => {
-  const [activeChat, setActiveChat] = useState<number | null>(null);  // Active chat by ID
-  const [chats, setChats] = useState<{ id: number; name: string; messages: { content: string; senderId: number }[] }[]>([]);
+  const [activeChat, setActiveChat] = useState<{chatId: number; receiverId: number} | null>(null);  // Active chat by ID
+  const [chats, setChats] = useState<{ id: number; name: string; messages: { content: string; senderId: number; receiverId: number; }[] }[]>([]);
   const { user } = useAuth();
 
   const currentUserId = user?.id ?? 0;
 
-  const handleSetActiveChat = (id: number) => {
-    setActiveChat(id); 
+  const handleSetActiveChat = (chatId: number, receiverId: number ) => {
+    setActiveChat({chatId, receiverId}); 
   };
 
   // Fetch the chats from the backend
@@ -34,6 +34,7 @@ const Homepage: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         setChats(data);
+        console.log("data", data)
       } else {
         console.log("Failed to fetch chats", response.statusText);
       }
@@ -43,7 +44,7 @@ const Homepage: React.FC = () => {
   };
 
   // Add message to the active chat
-  const addMessage = async (chatId: number, message: { content: string; senderId: number }) => {
+  const addMessage = async (chatId: number, message: { content: string; senderId: number, receiverId: number }) => {
     setChats((prevChats) =>
       prevChats.map((chat) =>
         chat.id === chatId
@@ -69,6 +70,7 @@ const Homepage: React.FC = () => {
           chatId,
           content: message.content,
           senderId: message.senderId,
+          receiverId: message.receiverId,
         }),
       });
 

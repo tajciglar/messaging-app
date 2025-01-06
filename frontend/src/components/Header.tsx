@@ -19,7 +19,7 @@ const Header: React.FC = () => {
           <p className="p-4">{user?.name}</p>
           <button
             onClick={handleLogOut}
-            className="!bg-transparent !text-red-500 border-2 border-red-500 px-4 py-2 rounded-md hover:text-white hover:bg-red-500 focus:outline-none"
+            className="bg-red-500 text-white border-2 border-red-500 px-4 py-2 rounded-md hover:text-white hover:bg-red-500 focus:outline-none"
           >
             Logout
           </button>

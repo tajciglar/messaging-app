@@ -1,68 +1,83 @@
 import { PrismaClient } from '@prisma/client';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
 async function main() {
+  console.log('Seeding database...');
+
+  // Hash admin password
+  const hashedPass = await bcrypt.hash('admin123', 10);
+
   // Create the Admin account
   const admin = await prisma.user.create({
     data: {
       email: 'admin@example.com',
-      password: 'admin123', // In a real app, hash the password
+      password: hashedPass,
       name: 'Admin User',
     },
   });
 
+  console.log('Admin user created:', admin);
+
   // Create 10 random users
-  const users = [];
-  for (let i = 0; i < 10; i++) {
-    const user = await prisma.user.create({
-      data: {
-        email: faker.internet.email(),
-        password: 'password123', // In a real app, hash the password
-        name: faker.name.findName(),
-      },
-    });
-    users.push(user);
-  }
-
-  // Create chats for the admin with each user
-  for (const user of users) {
-    const chat = await prisma.chat.create({
-      data: {
-        name: `Chat with ${user.name}`,
-        participants: {
-          connect: [{ id: admin.id }, { id: user.id }],
+  const users = await Promise.all(
+    Array.from({ length: 10 }).map(async () => {
+      const user = await prisma.user.create({
+        data: {
+          email: faker.internet.email(),
+          password: await bcrypt.hash('password123', 10), // Always hash passwords
+          name: faker.name.fullName(),
         },
-      },
-    });
+      });
+      console.log('Created user:', user);
+      return user;
+    })
+  );
 
-    // Create messages between the admin and the user (one example message)
-    await prisma.message.create({
-      data: {
-        content: 'Hello!',
-        senderId: admin.id,
-        receiverId: user.id,
-        chatId: chat.id,
-      },
-    });
+  // Create chats and messages for each user with the admin
+  await Promise.all(
+    users.map(async (user) => {
+      const chat = await prisma.chat.create({
+        data: {
+          name: user.name,
+          participants: {
+            connect: [{ id: admin.id }, { id: user.id }],
+          },
+        },
+      });
 
-    await prisma.message.create({
-      data: {
-        content: 'Hi there!',
-        senderId: user.id,
-        receiverId: admin.id,
-        chatId: chat.id,
-      },
-    });
-  }
+      console.log('Chat created:', chat);
 
-  console.log('Database has been reset and seeded!');
+      // Create messages between admin and the user
+      await prisma.message.createMany({
+        data: [
+          {
+            content: 'Hello!',
+            senderId: admin.id,
+            receiverId: user.id,
+            chatId: chat.id,
+          },
+          {
+            content: 'Hi there!',
+            senderId: user.id,
+            receiverId: admin.id,
+            chatId: chat.id,
+          },
+        ],
+      });
+
+      console.log(`Messages created for chat with user ${user.name}`);
+    })
+  );
+
+  console.log('Seeding completed successfully!');
 }
 
 main()
   .catch((e) => {
-    console.error(e);
+    console.error('Error seeding the database:', e);
     process.exit(1);
   })
   .finally(async () => {

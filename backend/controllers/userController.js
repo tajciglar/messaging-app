@@ -16,7 +16,7 @@ async function getChats(req, res) {
             },
             select: {
                 id: true,
-                name: true,  // Chat name (can be null for 1-on-1 chats)
+                name: true,  
                 messages: {
                     select: {
                         id: true,
@@ -31,6 +31,7 @@ async function getChats(req, res) {
                         },
                         receiver: {
                             select: {
+                                id: true,
                                 name: true,
                             },
                         },
@@ -55,7 +56,8 @@ async function getChats(req, res) {
 
 async function setMessage(req, res) {
     const { chatId, content, senderId, receiverId } = req.body;
-
+    console.log(req.body)
+    console.log(chatId, content, senderId, receiverId)
     try {
         // Create the new message
         const newMessage = await prisma.message.create({

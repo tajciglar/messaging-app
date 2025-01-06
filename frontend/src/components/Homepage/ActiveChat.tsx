@@ -1,41 +1,45 @@
 import { useState } from "react";
 
 interface ActiveChatProps {
-  activeChat: number | null;
-  chats: { id: number; name: string; messages: { content: string; senderId: number; }[] }[];
-  addMessage: (chatId: number, message: { content: string; senderId: number }) => void;
+  activeChat: { chatId: number; receiverId: number } | null;
+  chats: {
+    id: number;
+    name: string;
+    messages: { content: string; senderId: number; receiverId: number }[];
+  }[];
+  addMessage: (chatId: number, message: { content: string; senderId: number; receiverId: number }) => void;
   currentUserId: number;
 }
 
 const ActiveChat: React.FC<ActiveChatProps> = ({ activeChat, chats, addMessage, currentUserId }) => {
   const [currentMessage, setCurrentMessage] = useState<string>("");
 
+  // Ensure activeChat is not null before attempting to use it
   const handleSend = () => {
     if (currentMessage.trim() && activeChat !== null) {
-      addMessage(activeChat, { content: currentMessage, senderId: currentUserId });
+      addMessage(activeChat.chatId, { content: currentMessage, senderId: currentUserId, receiverId: activeChat.receiverId });
       setCurrentMessage(""); 
     }
   };
 
-  const activeChatData = chats.find((chat) => chat.id === activeChat);  
+  const activeChatData = chats.find((chat) => chat.id === activeChat?.chatId); // Use optional chaining to safely access activeChat properties
 
   return (
     <div className="h-full flex flex-col">
       <div className="p-4 border-b bg-gray-100">
         {activeChat ? (
-          <h2 className="text-xl font-bold">{activeChatData?.name}</h2>  // Display the active chat's name
+          <h2 className="text-xl font-bold"> Chat with {activeChatData?.name}</h2> 
         ) : (
           <p className="text-gray-500 text-center">Select a chat to start messaging</p>
         )}
       </div>
-
-      <div className="m-4">
+      <div className="flex flex-col m-4">
         {activeChatData && activeChatData.messages.length > 0 ? (
           activeChatData.messages.map((message, index) => (
             <div
               key={index}
               className={`p-2 rounded-md max-w-sm ${
-                message.senderId === currentUserId ? 'bg-blue-100 float-right' : 'bg-gray-100'
+                message.senderId === currentUserId ? 'bg-blue-100 !self-end' : 'bg-gray-100'
               }`}
             >
               {message.content}

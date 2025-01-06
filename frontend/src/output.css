@@ -107,7 +107,7 @@
 }
 
 /*
-! tailwindcss v3.4.15 | MIT License | https://tailwindcss.com
+! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com
 */
 
 /*
@@ -554,10 +554,6 @@ video {
   display: none;
 }
 
-.float-right {
-  float: right;
-}
-
 .m-4 {
   margin: 1rem;
 }
@@ -671,6 +667,10 @@ video {
 .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
   --tw-divide-opacity: 1;
   border-color: rgb(229 231 235 / var(--tw-divide-opacity, 1));
+}
+
+.\!self-end {
+  align-self: flex-end !important;
 }
 
 .rounded-lg {
