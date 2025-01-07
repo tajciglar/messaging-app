@@ -19,6 +19,7 @@ const LogIn: React.FC = () => {
     }
 
     try {
+      console.log(BACKEND_URL)
       const response = await fetch(`${BACKEND_URL}/auth/login`, {
         method: "POST",
         headers: {
