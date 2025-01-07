@@ -35,12 +35,11 @@ Admin Credentials:
 **Frontend**:
 - React
 - Vite
-- WebSocket for real-time communication
+- TailWindCSS
 
 **Backend**:
 - Node.js
 - Express.js
-- WebSocket (for real-time communication)
 - Prisma ORM
 - PostgreSQL
 
