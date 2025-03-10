@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors({
   origin: [
-    "http://localhost:3002",  // For local development
+    "http://localhost:3001",  // For local development
     "https://tajs-messaging-app.netlify.app/"  // For production on Netlify
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
