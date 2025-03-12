@@ -1,9 +1,18 @@
+import { useState } from "react";
+
 interface AllChatsProps {
-  setActiveChat: (id: number, receiverId: number) => void; 
+  setActiveChat: (id: number, receiverId: number) => void;
   chats: { id: number; name: string; messages: { content: string; receiverId: number }[] }[];
 }
 
 const AllChats: React.FC<AllChatsProps> = ({ setActiveChat, chats }) => {
+  const [activeChatId, setActiveChatId] = useState<number | null>(null);
+
+  const handleChatClick = (chatId: number, receiverId: number) => {
+    setActiveChat(chatId, receiverId);
+    setActiveChatId(chatId);
+  };
+
   return (
     <div className="w-full h-full">
       <h2 className="p-4 text-lg font-bold">Chats</h2>
@@ -16,8 +25,10 @@ const AllChats: React.FC<AllChatsProps> = ({ setActiveChat, chats }) => {
             return (
               <li
                 key={chat.id}
-                onClick={() => setActiveChat(chat.id, receiverId)} 
-                className="p-4 hover:bg-gray-100 cursor-pointer"
+                onClick={() => handleChatClick(chat.id, receiverId)}
+                className={`p-4 cursor-pointer ${
+                  activeChatId === chat.id ? "bg-blue-100" : "hover:bg-gray-100"
+                }`}
               >
                 {chat.name}
               </li>

@@ -91,7 +91,7 @@ const Homepage: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex w-full bg-white rounded-lg border-2">
+    <div className="flex w-3/4 bg-white rounded-lg border-2">
       <div className="border-r-2 w-1/4">
         <AllChats setActiveChat={handleSetActiveChat} chats={chats} />
       </div>
