@@ -10,8 +10,14 @@ const indexRoutes = require('./routes/userRoutes')
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+const allowedOrigins = [
+  "http://localhost:3001", 
+  "https://tajs-messaging-app.netlify.app"
+];
+
 app.use(cors({
-  origin: "http://localhost:3001", 
+  origin: allowedOrigins,
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));
