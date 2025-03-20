@@ -15,6 +15,7 @@ app.use(express.json());
 app.use(cors({
   origin: [
     "http://localhost:3001",  // For local development
+    "http://localhost:4173",  // For local development - vite
     "https://tajs-messaging-app.netlify.app/"  // For production on Netlify
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
