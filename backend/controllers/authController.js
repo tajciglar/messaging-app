@@ -60,7 +60,13 @@ async function logIn (req, res) {
             email: email,
         },
     });
-    console.log(user)
+    
+    if (!user) {
+    return res.status(401).json({ 
+        success: false, 
+        message: 'We couldn’t find an account with that email. Please check the email address or sign up if you don’t have an account.' 
+    });
+}
   
     const match = await bcrypt.compare(password, user.password);
     if (!match) {

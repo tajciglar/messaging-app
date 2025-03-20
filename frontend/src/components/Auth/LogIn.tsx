@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAuth } from "../context/AuthContext"; // Import the custom hook
+import { useAuth } from "../context/AuthContext"; 
 import { useNavigate } from "react-router-dom";
 
 const LogIn: React.FC = () => {
@@ -8,6 +8,7 @@ const LogIn: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const { logIn } = useAuth(); 
   const navigate = useNavigate();
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -18,7 +19,8 @@ const LogIn: React.FC = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/auth/login", {
+      console.log(BACKEND_URL)
+      const response = await fetch(`${BACKEND_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -41,7 +43,7 @@ const LogIn: React.FC = () => {
   }
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
+    <div className="flex items-center justify-center h-full bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h1 className="text-2xl font-bold mb-4 text-center">Log In</h1>
         <form onSubmit={handleSubmit} className="space-y-4">

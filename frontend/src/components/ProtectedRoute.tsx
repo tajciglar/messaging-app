@@ -7,7 +7,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, redirectTo }) => {
-    const { isLoggedIn } = useAuth(); // Check if the user is logged in from context
+    const { isLoggedIn } = useAuth(); 
     
     if (!isLoggedIn) {
         return <Navigate to={redirectTo} replace />;

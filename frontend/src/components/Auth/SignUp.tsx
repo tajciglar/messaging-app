@@ -7,8 +7,12 @@ const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  console.log(BACKEND_URL)
 
   const navigate = useNavigate();
+
+
   async function handleSubmit (e: React.FormEvent) {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -17,7 +21,7 @@ const SignUp: React.FC = () => {
     }
     
     try {
-      const response = await fetch('http://localhost:3000/auth/signup', {
+      const response = await fetch(`${BACKEND_URL}/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,7 +41,7 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
+    <div className="flex items-center justify-center h-full bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h1 className="text-2xl font-bold mb-4 text-center">Sign Up</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
