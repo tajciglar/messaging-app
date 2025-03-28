@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js && node seed.js",
-    "dev": "nodemon app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "seed": "node prisma/seed.js",
+    "migrate": "prisma migrate dev",
+    "generate": "prisma generate"
   },
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",

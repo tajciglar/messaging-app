@@ -28,7 +28,7 @@ async function main() {
         data: {
           email: faker.internet.email(),
           password: await bcrypt.hash('password123', 10), // Always hash passwords
-          name: faker.name.fullName(),
+          name: faker.person.fullName(),
         },
       });
       console.log('Created user:', user);
