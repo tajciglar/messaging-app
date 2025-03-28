@@ -9,7 +9,6 @@
     "migrate": "prisma migrate dev",
     "generate": "prisma generate"
   },
-  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
