@@ -16,7 +16,7 @@ app.use(cors({
   origin: [
     "http://localhost:3001",  // For local development
     "http://localhost:4173",  // For local development - vite
-    "https://tajs-messaging-app.netlify.app/"  // For production on Netlify
+    "https://tajs-messaging-app.netlify.app"  // For production on Netlify
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true, // Allow cookies and authentication headers
