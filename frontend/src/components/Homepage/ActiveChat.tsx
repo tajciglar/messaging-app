@@ -33,7 +33,7 @@ const ActiveChat: React.FC<ActiveChatProps> = ({ activeChat, chats, addMessage, 
           <p className="text-gray-500 text-center">Select a chat to start messaging</p>
         )}
       </div>
-      <div className="flex flex-col m-4">
+      <div className="flex flex-col m-4 h-full overflow-y-auto">
         {activeChatData && activeChatData.messages.length > 0 ? (
           activeChatData.messages.map((message, index) => (
             <div
